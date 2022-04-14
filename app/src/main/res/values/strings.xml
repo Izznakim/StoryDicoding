@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">StoryDicoding</string>
+    <string name="email">Email</string>
+    <string name="example_gmail_com">example@gmail.com</string>
+    <string name="password">Password</string>
+    <string name="login">Masuk</string>
+    <string name="name">Nama</string>
+    <string name="welcome_title">Selamat datang di StoryDicoding!</string>
+    <string name="welcome_paragraph">Mau tahu cerita dari teman-teman yang sedang belajar atau yang sudah lulus dari dicoding?, Atau mau berbagi cerita saat belajar di dicoding?. Di StoryDicoding aja!</string>
+    <string name="signup">Daftar</string>
 </resources>
