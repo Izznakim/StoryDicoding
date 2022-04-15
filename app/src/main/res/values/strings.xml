@@ -8,4 +8,6 @@
     <string name="welcome_title">Selamat datang di StoryDicoding!</string>
     <string name="welcome_paragraph">Mau tahu cerita dari teman-teman yang sedang belajar atau yang sudah lulus dari dicoding?, Atau mau berbagi cerita saat belajar di dicoding?. Di StoryDicoding aja!</string>
     <string name="signup">Daftar</string>
+    <string name="welcome_name">Selamat Datang %1$s</string>
+    <string name="logout">Logout</string>
 </resources>
