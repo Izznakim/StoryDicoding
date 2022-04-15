@@ -1,4 +1,4 @@
-package com.example.storydicoding.model
+package com.example.storydicoding.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

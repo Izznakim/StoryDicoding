@@ -1,20 +1,19 @@
-package com.example.storydicoding.ui.main
+package com.example.storydicoding.ui.liststory.main
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.example.storydicoding.R
 import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivityMainBinding
-import com.example.storydicoding.model.UserPreference
+import com.example.storydicoding.data.model.UserPreference
+import com.example.storydicoding.ui.liststory.ListStoryFragment
 import com.example.storydicoding.ui.welcomepage.WelcomeActivity
 
 private val Context.dataStore:DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -28,21 +27,9 @@ class MainActivity : AppCompatActivity() {
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
+        WelcomeActivity.setupView(window,supportActionBar)
         setupViewModel()
         setupAction()
-    }
-
-    private fun setupView(){
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        }else{
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
     }
 
     private fun setupViewModel(){
@@ -50,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this){
             if (it.isLogin){
-                binding.tvWelcomeName.text=getString(R.string.welcome_name,it.name)
+                setupFragment()
             }else{
                 startActivity(Intent(this,WelcomeActivity::class.java))
                 finish()
@@ -62,6 +49,17 @@ class MainActivity : AppCompatActivity() {
         binding.btnLogout.setOnClickListener {
             mainViewModel.logout()
         }
+    }
+
+    private fun setupFragment(){
+//        val mFragmentManager=supportFragmentManager
+//        val fragment=mFragmentManager.findFragmentByTag(ListStoryFragment::class.java.simpleName)
+//
+//        if (fragment !is ListStoryFragment){
+//            mFragmentManager.commit {
+//                add(R.id.fragment_story_container, ListStoryFragment(), ListStoryFragment::class.java.simpleName)
+//            }
+//        }
     }
 
     companion object{

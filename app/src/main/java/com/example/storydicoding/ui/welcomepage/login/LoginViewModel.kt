@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.storydicoding.model.User
-import com.example.storydicoding.model.UserPreference
+import com.example.storydicoding.data.model.User
+import com.example.storydicoding.data.model.UserPreference
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val pref:UserPreference): ViewModel() {

@@ -1,4 +1,4 @@
-package com.example.storydicoding.model
+package com.example.storydicoding.data.model
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

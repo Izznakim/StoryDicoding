@@ -4,14 +4,15 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivitySignupBinding
-import com.example.storydicoding.model.User
-import com.example.storydicoding.model.UserPreference
+import com.example.storydicoding.data.model.User
+import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.ui.welcomepage.WelcomeActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -49,12 +50,18 @@ class SignupActivity : AppCompatActivity() {
                     password.isEmpty() -> etPassword.error = "Masukkan password"
                     else -> {
                         signupViewModel.saveUser(User(name, email, password, false))
-                        Toast.makeText(
-                            this@SignupActivity,
-                            "Akunmu sudah jadi nih. Yuk, login dan bagikan ceritamu.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        signupViewModel.registerUser(User(name, email, password, false))
+                        signupViewModel.message.observe(this@SignupActivity){
+                            AlertDialog.Builder(this@SignupActivity).apply {
+                                setTitle("SignUp!")
+                                setMessage(it)
+                                setPositiveButton("Next"){_,_->
+                                    finish()
+                                }
+                                create()
+                                show()
+                            }
+                        }
                     }
                 }
             }

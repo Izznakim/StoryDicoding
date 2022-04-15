@@ -2,8 +2,8 @@ package com.example.storydicoding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.storydicoding.ui.main.MainViewModel
-import com.example.storydicoding.model.UserPreference
+import com.example.storydicoding.ui.liststory.main.MainViewModel
+import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.ui.welcomepage.login.LoginViewModel
 import com.example.storydicoding.ui.welcomepage.signup.SignupViewModel
 import java.lang.IllegalArgumentException

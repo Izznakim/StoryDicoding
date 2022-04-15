@@ -8,12 +8,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.example.storydicoding.R
 import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivityLoginBinding
-import com.example.storydicoding.model.User
-import com.example.storydicoding.model.UserPreference
-import com.example.storydicoding.ui.main.MainActivity
+import com.example.storydicoding.data.model.User
+import com.example.storydicoding.data.model.UserPreference
+import com.example.storydicoding.ui.liststory.main.MainActivity
 import com.example.storydicoding.ui.welcomepage.WelcomeActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
