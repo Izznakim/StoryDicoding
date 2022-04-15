@@ -39,10 +39,6 @@ class LoginActivity : AppCompatActivity() {
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
-
-        loginViewModel.getUser().observe(this) {
-            this.user = it
-        }
     }
 
     private fun setupAction(){

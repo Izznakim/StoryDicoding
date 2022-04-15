@@ -27,8 +27,12 @@ class LoginViewModel(private val pref:UserPreference): ViewModel() {
                 if (response.body()?.error==false){
                     _error.value=false
                     _message.value="Kamu sudah berhasil login. Waktunya membaca cerita dari teman-temanmu."
+                    val name=response.body()?.loginResult?.name
+                    val token=response.body()?.loginResult?.token
                     viewModelScope.launch {
-                        pref.login()
+                        if (name != null&&token != null) {
+                            pref.saveUser(name,token)
+                        }
                     }
                 }else{
                     _error.value=true
@@ -41,9 +45,5 @@ class LoginViewModel(private val pref:UserPreference): ViewModel() {
             }
 
         })
-    }
-
-    fun getUser():LiveData<User>{
-        return pref.getUser().asLiveData()
     }
 }

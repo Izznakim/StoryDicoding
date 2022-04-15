@@ -14,7 +14,6 @@ class ViewModelFactory(private val pref: UserPreference):ViewModelProvider.NewIn
         return when{
             modelClass.isAssignableFrom(MainViewModel::class.java)-> MainViewModel(pref) as T
             modelClass.isAssignableFrom(LoginViewModel::class.java)->LoginViewModel(pref) as T
-            modelClass.isAssignableFrom(SignupViewModel::class.java)->SignupViewModel(pref) as T
             else->throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

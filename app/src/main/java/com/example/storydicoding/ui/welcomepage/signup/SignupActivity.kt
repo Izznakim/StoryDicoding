@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivitySignupBinding
@@ -19,7 +21,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
-    private lateinit var signupViewModel: SignupViewModel
+    private val signupViewModel by viewModels<SignupViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +29,7 @@ class SignupActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         WelcomeActivity.setupView(window, supportActionBar)
-        setupViewModel()
         setupAction()
-    }
-
-    private fun setupViewModel() {
-        signupViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
-        )[SignupViewModel::class.java]
     }
 
     private fun setupAction() {
@@ -49,7 +43,7 @@ class SignupActivity : AppCompatActivity() {
                     email.isEmpty() -> etEmail.error = "Masukkan email"
                     password.isEmpty() -> etPassword.error = "Masukkan password"
                     else -> {
-                        signupViewModel.registerUser(User(name, email, password, false))
+                        signupViewModel.registerUser(name,email, password)
                         signupViewModel.message.observe(this@SignupActivity){
                             AlertDialog.Builder(this@SignupActivity).apply {
                                 setTitle("SignUp!")

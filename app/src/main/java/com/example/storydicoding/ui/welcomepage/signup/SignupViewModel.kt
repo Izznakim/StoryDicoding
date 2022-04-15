@@ -12,13 +12,13 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 
-class SignupViewModel(private val pref:UserPreference):ViewModel() {
+class SignupViewModel:ViewModel() {
 
     private val _message=MutableLiveData<String>()
     val message:LiveData<String> =_message
 
-    fun registerUser(user:User){
-        val client = ApiConfig.getApiService().registerUser(user.name,user.email,user.password)
+    fun registerUser(name:String,email:String,password:String){
+        val client = ApiConfig.getApiService().registerUser(name,email,password)
         client.enqueue(object :Callback<Response.RegisterResponse>{
             override fun onResponse(
                 call: Call<Response.RegisterResponse>,
@@ -26,9 +26,6 @@ class SignupViewModel(private val pref:UserPreference):ViewModel() {
             ) {
                 if (response.body()?.error == false){
                     _message.value="Akunmu sudah jadi ea. Yuk, login dan bagikan cerita belajarmu di dicoding."
-                    viewModelScope.launch {
-                        pref.saveUser(user)
-                    }
                 }else{
                     _message.value="Kamu sepertinya sudah pernah membuat Akun. Coba kamu login terlebih dahulu."
                 }

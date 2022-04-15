@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this){
             if (it.isLogin){
+                Log.d(TAG, "setupViewModel: ${it.name}, ${it.token}")
                 setupAction()
             }else{
                 startActivity(Intent(this,WelcomeActivity::class.java))
