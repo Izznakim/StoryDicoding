@@ -49,7 +49,6 @@ class SignupActivity : AppCompatActivity() {
                     email.isEmpty() -> etEmail.error = "Masukkan email"
                     password.isEmpty() -> etPassword.error = "Masukkan password"
                     else -> {
-                        signupViewModel.saveUser(User(name, email, password, false))
                         signupViewModel.registerUser(User(name, email, password, false))
                         signupViewModel.message.observe(this@SignupActivity){
                             AlertDialog.Builder(this@SignupActivity).apply {

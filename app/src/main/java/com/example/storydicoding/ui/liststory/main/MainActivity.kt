@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this){
             if (it.isLogin){
-                setupFragment()
+                setupAction()
             }else{
                 startActivity(Intent(this,WelcomeActivity::class.java))
                 finish()

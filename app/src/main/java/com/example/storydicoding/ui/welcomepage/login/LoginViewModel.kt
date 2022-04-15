@@ -1,21 +1,49 @@
 package com.example.storydicoding.ui.welcomepage.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.model.UserPreference
+import com.example.storydicoding.data.response.Response
+import com.example.storydicoding.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
 
 class LoginViewModel(private val pref:UserPreference): ViewModel() {
-    fun getUser():LiveData<User>{
-        return pref.getUser().asLiveData()
+
+    private val _message= MutableLiveData<String>()
+    val message:LiveData<String> =_message
+
+    private val _error= MutableLiveData<Boolean>()
+    val error:LiveData<Boolean> =_error
+
+    fun loginUser(email:String,password:String){
+        val client=ApiConfig.getApiService().loginUser(email,password)
+        client.enqueue(object :Callback<Response.LoginResponse>{
+            override fun onResponse(
+                call: Call<Response.LoginResponse>,
+                response: retrofit2.Response<Response.LoginResponse>
+            ) {
+                if (response.body()?.error==false){
+                    _error.value=false
+                    _message.value="Kamu sudah berhasil login. Waktunya membaca cerita dari teman-temanmu."
+                    viewModelScope.launch {
+                        pref.login()
+                    }
+                }else{
+                    _error.value=true
+                    _message.value="Email dan/atau Password kamu sepertinya salah."
+                }
+            }
+
+            override fun onFailure(call: Call<Response.LoginResponse>, t: Throwable) {
+                _message.value=t.message.toString()
+            }
+
+        })
     }
 
-    fun login(){
-        viewModelScope.launch {
-            pref.login()
-        }
+    fun getUser():LiveData<User>{
+        return pref.getUser().asLiveData()
     }
 }

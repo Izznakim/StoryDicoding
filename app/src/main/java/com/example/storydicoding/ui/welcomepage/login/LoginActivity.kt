@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -52,14 +53,27 @@ class LoginActivity : AppCompatActivity() {
                 when{
                     email.isEmpty()->etEmail.error="Masukkan email"
                     password.isEmpty()->etPassword.error="Masukkan password"
-                    email!=user.email->etEmail.error="Email tidak sesuai"
-                    password!=user.password->etPassword.error="Password tidak sesuai"
                     else->{
-                        loginViewModel.login()
-                        Intent(this@LoginActivity,MainActivity::class.java).also {
-                            it.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(it)
-                            finish()
+                        loginViewModel.loginUser(email, password)
+                        loginViewModel.message.observe(this@LoginActivity){
+                            AlertDialog.Builder(this@LoginActivity).apply{
+                                setTitle("Login!")
+                                setMessage(it)
+                                if(loginViewModel.error.value==false) {
+                                    setPositiveButton("Next") { _, _ ->
+                                        Intent(this@LoginActivity, MainActivity::class.java).also {
+                                            it.flags =
+                                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                            startActivity(it)
+                                            finish()
+                                        }
+                                    }
+                                }else{
+                                    setNegativeButton("Back") { _, _ ->}
+                                }
+                                create()
+                                show()
+                            }
                         }
                     }
                 }

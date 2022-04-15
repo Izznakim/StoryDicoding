@@ -26,8 +26,11 @@ class SignupViewModel(private val pref:UserPreference):ViewModel() {
             ) {
                 if (response.body()?.error == false){
                     _message.value="Akunmu sudah jadi ea. Yuk, login dan bagikan cerita belajarmu di dicoding."
+                    viewModelScope.launch {
+                        pref.saveUser(user)
+                    }
                 }else{
-                    _message.value="Akun ini sudah pernah dibuat, coba kamu login terlebih dahulu."
+                    _message.value="Kamu sepertinya sudah pernah membuat Akun. Coba kamu login terlebih dahulu."
                 }
             }
 
@@ -35,11 +38,5 @@ class SignupViewModel(private val pref:UserPreference):ViewModel() {
                 _message.value=t.message.toString()
             }
         })
-    }
-
-    fun saveUser(user: User){
-        viewModelScope.launch {
-            pref.saveUser(user)
-        }
     }
 }

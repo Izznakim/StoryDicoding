@@ -14,4 +14,11 @@ interface ApiService {
         @Field("email")email:String,
         @Field("password")password:String
     ):Call<Response.RegisterResponse>
+
+    @FormUrlEncoded
+    @POST("login")
+    fun loginUser(
+        @Field("email")email:String,
+        @Field("password")password:String
+    ):Call<Response.LoginResponse>
 }
