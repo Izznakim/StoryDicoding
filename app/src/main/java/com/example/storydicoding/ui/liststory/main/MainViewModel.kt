@@ -8,6 +8,8 @@ import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
 
 class MainViewModel(private val pref:UserPreference):ViewModel() {
     fun getUser():LiveData<User>{

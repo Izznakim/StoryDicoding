@@ -3,7 +3,7 @@ package com.example.storydicoding.ui.welcomepage.login
 import androidx.lifecycle.*
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.data.response.Response
+import com.example.storydicoding.data.response.LoginResponse
 import com.example.storydicoding.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -19,10 +19,10 @@ class LoginViewModel(private val pref:UserPreference): ViewModel() {
 
     fun loginUser(email:String,password:String){
         val client=ApiConfig.getApiService().loginUser(email,password)
-        client.enqueue(object :Callback<Response.LoginResponse>{
+        client.enqueue(object :Callback<LoginResponse>{
             override fun onResponse(
-                call: Call<Response.LoginResponse>,
-                response: retrofit2.Response<Response.LoginResponse>
+                call: Call<LoginResponse>,
+                response: retrofit2.Response<LoginResponse>
             ) {
                 if (response.body()?.error==false){
                     _error.value=false
@@ -40,7 +40,7 @@ class LoginViewModel(private val pref:UserPreference): ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<Response.LoginResponse>, t: Throwable) {
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 _message.value=t.message.toString()
             }
 

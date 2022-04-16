@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.data.response.Response
+import com.example.storydicoding.data.response.RegisterResponse
 import com.example.storydicoding.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -19,10 +19,10 @@ class SignupViewModel:ViewModel() {
 
     fun registerUser(name:String,email:String,password:String){
         val client = ApiConfig.getApiService().registerUser(name,email,password)
-        client.enqueue(object :Callback<Response.RegisterResponse>{
+        client.enqueue(object :Callback<RegisterResponse>{
             override fun onResponse(
-                call: Call<Response.RegisterResponse>,
-                response: retrofit2.Response<Response.RegisterResponse>
+                call: Call<RegisterResponse>,
+                response: retrofit2.Response<RegisterResponse>
             ) {
                 if (response.body()?.error == false){
                     _message.value="Akunmu sudah jadi ea. Yuk, login dan bagikan cerita belajarmu di dicoding."
@@ -31,7 +31,7 @@ class SignupViewModel:ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<Response.RegisterResponse>, t: Throwable) {
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _message.value=t.message.toString()
             }
         })
