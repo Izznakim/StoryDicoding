@@ -1,4 +1,4 @@
-package com.example.storydicoding.ui.liststory.list
+package com.example.storydicoding.ui.liststory
 
 import android.util.Log
 import androidx.lifecycle.LiveData

@@ -1,8 +1,8 @@
-package com.example.storydicoding.ui.liststory.detail
+package com.example.storydicoding.ui.detailstory
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,16 +57,19 @@ class DetailStoryFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
 
-        val dialog=dialog
-        if (dialog!=null){
-            val width=ViewGroup.LayoutParams.MATCH_PARENT
-            val height=ViewGroup.LayoutParams.WRAP_CONTENT
-            dialog.window?.setLayout(width, height)
-        }
+        dialogLayoutSetting(dialog)
     }
 
     companion object{
         const val STORY="story"
         private const val TAG = "DetailStoryFragment"
+
+        fun dialogLayoutSetting(dialog: Dialog?){
+            if (dialog!=null){
+                val width=ViewGroup.LayoutParams.MATCH_PARENT
+                val height=ViewGroup.LayoutParams.WRAP_CONTENT
+                dialog.window?.setLayout(width, height)
+            }
+        }
     }
 }

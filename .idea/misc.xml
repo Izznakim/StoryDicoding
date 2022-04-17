@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.1403985507246377" />
+        <entry key="app/src/main/res/layout/fragment_add_story.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_detail_story.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_list_story.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
@@ -14,6 +15,7 @@
         <entry key="app/src/main/res/layout/fragment_welcome.xml" value="0.22" />
         <entry key="app/src/main/res/layout/story_item.xml" value="0.25" />
         <entry key="app/src/main/res/menu/option_menu.xml" value="0.25" />
+        <entry key="app/src/main/res/xml/file_paths.xml" value="0.1403985507246377" />
       </map>
     </option>
   </component>

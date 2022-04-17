@@ -1,4 +1,4 @@
-package com.example.storydicoding.ui.liststory.list
+package com.example.storydicoding.ui.liststory
 
 import android.os.Bundle
 import android.util.Log
@@ -6,14 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.storydicoding.R
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.databinding.FragmentListStoryBinding
 import com.example.storydicoding.ui.adapter.StoryAdapter
+import com.example.storydicoding.ui.addstory.AddStoryFragment
+import com.example.storydicoding.ui.detailstory.DetailStoryFragment
 
 class ListStoryFragment : Fragment() {
     private var _binding: FragmentListStoryBinding?=null
@@ -37,6 +38,7 @@ class ListStoryFragment : Fragment() {
         setupArguments()
         setupAdapter()
         setupRecycleView()
+        setupActionView()
     }
 
     private fun setupArguments(){
@@ -55,9 +57,18 @@ class ListStoryFragment : Fragment() {
     private fun setupRecycleView(){
         listStoryViewModel.getListStories("Bearer ${user?.token}").observe(viewLifecycleOwner){
             binding.rvStory.adapter=setStories(it)
-            it.forEach{ story->
-                Log.d(TAG, "onViewCreated: ${story.name}")
-            }
+        }
+    }
+
+    private fun setupActionView(){
+        binding.fabCreateStory.setOnClickListener {
+            val fragmentManager=parentFragmentManager
+            val addStoryFragment=AddStoryFragment()
+            val bundle= Bundle()
+
+            bundle.putString(AddStoryFragment.TOKEN,user?.token)
+            addStoryFragment.arguments=bundle
+            addStoryFragment.show(fragmentManager, AddStoryFragment::class.java.simpleName)
         }
     }
 

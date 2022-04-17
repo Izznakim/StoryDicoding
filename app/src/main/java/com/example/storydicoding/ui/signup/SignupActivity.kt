@@ -1,23 +1,15 @@
-package com.example.storydicoding.ui.welcomepage.signup
+package com.example.storydicoding.ui.signup
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivitySignupBinding
-import com.example.storydicoding.data.model.User
-import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.ui.welcomepage.WelcomeActivity
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+import com.example.storydicoding.ui.WelcomeActivity
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
@@ -43,8 +35,7 @@ class SignupActivity : AppCompatActivity() {
                     email.isEmpty() -> etEmail.error = "Masukkan email"
                     password.isEmpty() -> etPassword.error = "Masukkan password"
                     else -> {
-                        signupViewModel.registerUser(name,email, password)
-                        signupViewModel.message.observe(this@SignupActivity){
+                        signupViewModel.registerUser(name,email, password).observe(this@SignupActivity){
                             AlertDialog.Builder(this@SignupActivity).apply {
                                 setTitle("SignUp!")
                                 setMessage(it)

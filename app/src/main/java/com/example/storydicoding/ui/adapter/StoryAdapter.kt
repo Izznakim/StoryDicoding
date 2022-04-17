@@ -10,8 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.storydicoding.Helper.Companion.dateFormat
 import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.databinding.StoryItemBinding
-import com.example.storydicoding.ui.liststory.detail.DetailStoryFragment
-import com.google.android.material.snackbar.Snackbar
+import com.example.storydicoding.ui.detailstory.DetailStoryFragment
 
 class StoryAdapter(private val listStory:List<ListStoryItem>):RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     class StoryViewHolder(private val binding: StoryItemBinding):RecyclerView.ViewHolder(binding.root) {

@@ -3,8 +3,11 @@ package com.example.storydicoding.data.retrofit
 import com.example.storydicoding.data.response.LoginResponse
 import com.example.storydicoding.data.response.RegisterResponse
 import com.example.storydicoding.data.response.StoriesResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.File
 
 interface ApiService {
     @FormUrlEncoded
@@ -24,4 +27,12 @@ interface ApiService {
 
     @GET("stories")
     fun getStories(@Header("Authorization") authorization: String): Call<StoriesResponse>
+
+    @Multipart
+    @POST("stories")
+    fun addNewStory(
+        @Header("Authorization") authorization: String,
+        @Part("description") desc:RequestBody,
+        @Part photo:MultipartBody.Part
+    ):Call<RegisterResponse>
 }

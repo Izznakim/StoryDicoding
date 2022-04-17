@@ -1,4 +1,4 @@
-package com.example.storydicoding.ui.liststory.main
+package com.example.storydicoding.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -19,8 +19,8 @@ import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.databinding.ActivityMainBinding
 import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.ui.liststory.list.ListStoryFragment
-import com.example.storydicoding.ui.welcomepage.WelcomeActivity
+import com.example.storydicoding.ui.liststory.ListStoryFragment
+import com.example.storydicoding.ui.WelcomeActivity
 
 private val Context.dataStore:DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             if (it.isLogin){
                 setupFragment(it)
             }else{
-                startActivity(Intent(this,WelcomeActivity::class.java))
+                startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
         }

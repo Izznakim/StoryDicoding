@@ -1,4 +1,4 @@
-package com.example.storydicoding.ui.welcomepage
+package com.example.storydicoding.ui
 
 import android.content.Intent
 import android.os.Build
@@ -9,8 +9,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.ActionBar
 import com.example.storydicoding.databinding.ActivityWelcomeBinding
-import com.example.storydicoding.ui.welcomepage.login.LoginActivity
-import com.example.storydicoding.ui.welcomepage.signup.SignupActivity
+import com.example.storydicoding.ui.login.LoginActivity
+import com.example.storydicoding.ui.signup.SignupActivity
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -29,10 +29,10 @@ class WelcomeActivity : AppCompatActivity() {
     private fun setupAction(){
         binding.apply {
             btnLogin.setOnClickListener {
-                startActivity(Intent(this@WelcomeActivity,LoginActivity::class.java))
+                startActivity(Intent(this@WelcomeActivity, LoginActivity::class.java))
             }
             btnSignup.setOnClickListener {
-                startActivity(Intent(this@WelcomeActivity,SignupActivity::class.java))
+                startActivity(Intent(this@WelcomeActivity, SignupActivity::class.java))
             }
         }
     }

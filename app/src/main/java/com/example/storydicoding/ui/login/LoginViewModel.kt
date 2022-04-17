@@ -1,7 +1,6 @@
-package com.example.storydicoding.ui.welcomepage.login
+package com.example.storydicoding.ui.login
 
 import androidx.lifecycle.*
-import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.data.response.LoginResponse
 import com.example.storydicoding.data.retrofit.ApiConfig

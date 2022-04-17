@@ -1,4 +1,4 @@
-package com.example.storydicoding.ui.welcomepage.login
+package com.example.storydicoding.ui.login
 
 import android.content.Context
 import android.content.Intent
@@ -13,8 +13,8 @@ import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivityLoginBinding
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.ui.liststory.main.MainActivity
-import com.example.storydicoding.ui.welcomepage.WelcomeActivity
+import com.example.storydicoding.ui.main.MainActivity
+import com.example.storydicoding.ui.WelcomeActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 

@@ -49,18 +49,18 @@ class MyEditText : AppCompatEditText {
             }
 
             override fun onTextChanged(s: CharSequence?, before: Int, after: Int, count: Int) {
-                if (inputType== EMAIL_TYPE){
-                    if (s.toString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) error="Email tidak Valid!"
-                }else if (inputType== PASSWORD_TYPE){
-                    if (s.toString().length < 6) error="Password harus lebih dari 6 karakter"
+                when (inputType) {
+                    EMAIL_TYPE -> if (s.toString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) error="Email tidak Valid!"
+                    PASSWORD_TYPE -> if (s.toString().length < 6) error="Password harus lebih dari 6 karakter"
+                    PARAGRAPH_TYPE->if(s.toString().isEmpty()) error="Kamu harus mengisi terlebih dahulu"
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (inputType== EMAIL_TYPE){
-                    if (s.toString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) error="Email tidak Valid!"
-                }else if (inputType== PASSWORD_TYPE){
-                    if (s.toString().length < 6) error="Password harus lebih dari 6 karakter"
+                when (inputType) {
+                    EMAIL_TYPE -> if (s.toString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) error="Email tidak Valid!"
+                    PASSWORD_TYPE -> if (s.toString().length < 6) error="Password harus lebih dari 6 karakter"
+                    PARAGRAPH_TYPE->if(s.toString().isEmpty()) error="Kamu harus mengisi terlebih dahulu"
                 }
             }
         })
@@ -83,5 +83,6 @@ class MyEditText : AppCompatEditText {
         private const val EMAIL_TYPE=33
         private const val PASSWORD_TYPE=129
         private const val NAME_TYPE=97
+        private const val PARAGRAPH_TYPE=131073
     }
 }
