@@ -1,9 +1,12 @@
 package com.example.storydicoding.ui
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -23,7 +26,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         setupView(window,supportActionBar)
         setupAction()
-        supportActionBar?.hide()
+        playAnimation()
     }
 
     private fun setupAction(){
@@ -34,6 +37,28 @@ class WelcomeActivity : AppCompatActivity() {
             btnSignup.setOnClickListener {
                 startActivity(Intent(this@WelcomeActivity, SignupActivity::class.java))
             }
+        }
+    }
+
+    private fun playAnimation(){
+        ObjectAnimator.ofFloat(binding.ivWelcome, View.TRANSLATION_X,-30f,30f).apply {
+            duration=6000
+            repeatCount=ObjectAnimator.INFINITE
+            repeatMode=ObjectAnimator.REVERSE
+        }.start()
+
+        val title=ObjectAnimator.ofFloat(binding.tvTitle,View.ALPHA,1f).setDuration(500)
+        val desc=ObjectAnimator.ofFloat(binding.tvDesc,View.ALPHA,1f).setDuration(500)
+        val login=ObjectAnimator.ofFloat(binding.btnLogin,View.ALPHA,1f).setDuration(500)
+        val signup=ObjectAnimator.ofFloat(binding.btnSignup,View.ALPHA,1f).setDuration(500)
+
+        val together=AnimatorSet().apply {
+            playTogether(login,signup)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title,desc,together)
+            start()
         }
     }
 

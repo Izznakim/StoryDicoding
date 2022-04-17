@@ -1,9 +1,12 @@
 package com.example.storydicoding.ui.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -32,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
         WelcomeActivity.setupView(window,supportActionBar)
         setupViewModel()
         setupAction()
+        playAnimation()
     }
 
     private fun setupViewModel() {
@@ -74,6 +78,42 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun playAnimation(){
+        ObjectAnimator.ofFloat(binding.ivLogin, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.tvTitle, View.ALPHA, 1f).setDuration(500)
+        val desc = ObjectAnimator.ofFloat(binding.tvDesc, View.ALPHA, 1f).setDuration(500)
+        val email = ObjectAnimator.ofFloat(binding.tvEmail, View.ALPHA, 1f).setDuration(500)
+        val emailEdit = ObjectAnimator.ofFloat(binding.etEmail, View.ALPHA, 1f).setDuration(500)
+        val password = ObjectAnimator.ofFloat(binding.tvPassword, View.ALPHA, 1f).setDuration(500)
+        val passwordEdit =
+            ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(500)
+        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(500)
+
+        val togetherName = AnimatorSet().apply {
+            playTogether(title, desc)
+        }
+        val togetherEmail = AnimatorSet().apply {
+            playTogether(email, emailEdit)
+        }
+        val togetherPassword = AnimatorSet().apply {
+            playTogether(password, passwordEdit)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title,
+                togetherName,
+                togetherEmail,
+                togetherPassword, login
+            )
+            start()
         }
     }
 }
