@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_baseline_exit_to_app_24"
         android:title="@string/logout"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_translate"
+        android:icon="@drawable/ic_baseline_translate_24"
+        android:title="@string/language_setting"
+        app:showAsAction="ifRoom" />
 </menu>

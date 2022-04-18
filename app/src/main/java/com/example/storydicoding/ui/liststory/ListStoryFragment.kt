@@ -86,7 +86,7 @@ class ListStoryFragment : Fragment() {
                 listStory.add(it)
             }
         } else {
-//            Tambah view data kosong
+            Snackbar.make(requireView(),getString(R.string.empty_data),Snackbar.LENGTH_LONG).show()
         }
         return StoryAdapter(listStory)
     }
