@@ -57,6 +57,7 @@ class ListStoryFragment : Fragment() {
         listStoryViewModel.getListStories("Bearer ${user?.token}").observe(viewLifecycleOwner) {
             binding.rvStory.adapter = setStories(it)
         }
+
         listStoryViewModel.error.observe(viewLifecycleOwner) {
             val message = if (!it) {
                 getString(R.string.message_success_load_list)
@@ -64,6 +65,10 @@ class ListStoryFragment : Fragment() {
                 getString(R.string.message_fail_load_list)
             }
             Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
+        }
+
+        listStoryViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
         }
     }
 
@@ -89,6 +94,14 @@ class ListStoryFragment : Fragment() {
             Snackbar.make(requireView(),getString(R.string.empty_data),Snackbar.LENGTH_LONG).show()
         }
         return StoryAdapter(listStory)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
     companion object {

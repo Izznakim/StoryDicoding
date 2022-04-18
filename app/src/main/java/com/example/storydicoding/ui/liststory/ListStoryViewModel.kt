@@ -12,7 +12,12 @@ import retrofit2.Callback
 class ListStoryViewModel : ViewModel() {
     private val _error = MutableLiveData<Boolean>()
     val error: LiveData<Boolean> = _error
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun getListStories(token: String): LiveData<List<ListStoryItem>> {
+        _isLoading.value = true
         val listStory = MutableLiveData<List<ListStoryItem>>()
         val client = ApiConfig.getApiService().getStories(token)
         client.enqueue(object : Callback<StoriesResponse> {
@@ -20,6 +25,7 @@ class ListStoryViewModel : ViewModel() {
                 call: Call<StoriesResponse>,
                 response: retrofit2.Response<StoriesResponse>
             ) {
+                _isLoading.value = false
                 if (response.isSuccessful) {
                     listStory.value = response.body()?.listStory
                     _error.value = false
@@ -29,6 +35,7 @@ class ListStoryViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<StoriesResponse>, t: Throwable) {
+                _isLoading.value = false
                 _error.value = true
             }
         })

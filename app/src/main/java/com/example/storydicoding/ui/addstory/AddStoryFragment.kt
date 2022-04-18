@@ -54,6 +54,7 @@ class AddStoryFragment : DialogFragment() {
 
         setupArguments()
         setupViewAction()
+        setupProgressBar()
     }
 
     private fun setupArguments() {
@@ -78,6 +79,12 @@ class AddStoryFragment : DialogFragment() {
                     etDesc.error = getString(R.string.error_desc_story)
                 }
             }
+        }
+    }
+
+    private fun setupProgressBar(){
+        addStoryViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
         }
     }
 
@@ -129,6 +136,14 @@ class AddStoryFragment : DialogFragment() {
                 getString(R.string.warning_image_story),
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 

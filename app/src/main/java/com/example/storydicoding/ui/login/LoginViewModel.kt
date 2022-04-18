@@ -16,13 +16,18 @@ class LoginViewModel(private val pref: UserPreference) : ViewModel() {
     private val _error = MutableLiveData<Boolean>()
     val error: LiveData<Boolean> = _error
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun loginUser(email: String, password: String) {
+        _isLoading.value = true
         val client = ApiConfig.getApiService().loginUser(email, password)
         client.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
                 call: Call<LoginResponse>,
                 response: retrofit2.Response<LoginResponse>
             ) {
+                _isLoading.value = false
                 if (response.body()?.error == false) {
                     _error.value = false
                     val name = response.body()?.loginResult?.name
@@ -38,6 +43,7 @@ class LoginViewModel(private val pref: UserPreference) : ViewModel() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                _isLoading.value = false
                 _error.value = true
             }
 

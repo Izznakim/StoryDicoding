@@ -22,7 +22,49 @@ class SignupActivity : AppCompatActivity() {
 
         WelcomeActivity.setupView(window, supportActionBar)
         setupAction()
+        setupProgressBar()
         playAnimation()
+    }
+
+    private fun setupAction() {
+        binding.apply {
+            btnSignup.setOnClickListener {
+                val name = etName.text.toString()
+                val email = etEmail.text.toString()
+                val password = etPassword.text.toString()
+                when {
+                    name.isEmpty() -> etName.error = getString(R.string.error_input_name)
+                    email.isEmpty() -> etEmail.error = getString(R.string.error_input_email)
+                    password.isEmpty() -> etPassword.error =
+                        getString(R.string.error_input_password)
+                    else -> {
+                        signupViewModel.registerUser(name, email, password)
+                            .observe(this@SignupActivity) {
+                                AlertDialog.Builder(this@SignupActivity).apply {
+                                    setTitle(getString(R.string.signup_alert_dialog))
+                                    val message: String = if (!it) {
+                                        getString(R.string.message_success_signup)
+                                    } else {
+                                        getString(R.string.message_fail_signup)
+                                    }
+                                    setMessage(message)
+                                    setPositiveButton(getString(R.string.next)) { _, _ ->
+                                        finish()
+                                    }
+                                    create()
+                                    show()
+                                }
+                            }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupProgressBar(){
+        signupViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
     }
 
     private fun playAnimation() {
@@ -63,38 +105,11 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAction() {
-        binding.apply {
-            btnSignup.setOnClickListener {
-                val name = etName.text.toString()
-                val email = etEmail.text.toString()
-                val password = etPassword.text.toString()
-                when {
-                    name.isEmpty() -> etName.error = getString(R.string.error_input_name)
-                    email.isEmpty() -> etEmail.error = getString(R.string.error_input_email)
-                    password.isEmpty() -> etPassword.error =
-                        getString(R.string.error_input_password)
-                    else -> {
-                        signupViewModel.registerUser(name, email, password)
-                            .observe(this@SignupActivity) {
-                                AlertDialog.Builder(this@SignupActivity).apply {
-                                    setTitle(getString(R.string.signup_alert_dialog))
-                                    val message: String = if (!it) {
-                                        getString(R.string.message_success_signup)
-                                    } else {
-                                        getString(R.string.message_fail_signup)
-                                    }
-                                    setMessage(message)
-                                    setPositiveButton(getString(R.string.next)) { _, _ ->
-                                        finish()
-                                    }
-                                    create()
-                                    show()
-                                }
-                            }
-                    }
-                }
-            }
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

@@ -10,7 +10,11 @@ import retrofit2.Callback
 
 class SignupViewModel : ViewModel() {
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun registerUser(name: String, email: String, password: String): LiveData<Boolean> {
+        _isLoading.value = true
         val error = MutableLiveData<Boolean>()
         val client = ApiConfig.getApiService().registerUser(name, email, password)
         client.enqueue(object : Callback<RegisterResponse> {
@@ -18,10 +22,12 @@ class SignupViewModel : ViewModel() {
                 call: Call<RegisterResponse>,
                 response: retrofit2.Response<RegisterResponse>
             ) {
+                _isLoading.value = false
                 error.value = response.body()?.error != false
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                _isLoading.value = false
                 error.value = true
             }
         })

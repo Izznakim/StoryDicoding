@@ -42,6 +42,10 @@ class LoginActivity : AppCompatActivity() {
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
+
+        loginViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
     }
 
     private fun setupAction() {
@@ -118,6 +122,14 @@ class LoginActivity : AppCompatActivity() {
                 togetherPassword, login
             )
             start()
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 }
