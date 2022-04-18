@@ -1,6 +1,5 @@
 package com.example.storydicoding.ui.liststory
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,30 +9,29 @@ import com.example.storydicoding.data.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 
-class ListStoryViewModel:ViewModel() {
-    fun getListStories(token:String):LiveData<List<ListStoryItem>>{
-        val listStory=MutableLiveData<List<ListStoryItem>>()
-        val client= ApiConfig.getApiService().getStories(token)
+class ListStoryViewModel : ViewModel() {
+    private val _error = MutableLiveData<Boolean>()
+    val error: LiveData<Boolean> = _error
+    fun getListStories(token: String): LiveData<List<ListStoryItem>> {
+        val listStory = MutableLiveData<List<ListStoryItem>>()
+        val client = ApiConfig.getApiService().getStories(token)
         client.enqueue(object : Callback<StoriesResponse> {
             override fun onResponse(
                 call: Call<StoriesResponse>,
                 response: retrofit2.Response<StoriesResponse>
             ) {
-                if (response.isSuccessful){
-                    listStory.value=response.body()?.listStory
-                }else{
-                    Log.d(TAG, "onResponse: ${response.message()}")
+                if (response.isSuccessful) {
+                    listStory.value = response.body()?.listStory
+                    _error.value = false
+                } else {
+                    _error.value = true
                 }
             }
 
             override fun onFailure(call: Call<StoriesResponse>, t: Throwable) {
-                Log.d(TAG, "onFailure: ${t.message}")
+                _error.value = true
             }
         })
         return listStory
-    }
-
-    companion object{
-        private const val TAG = "ListStoryViewModel"
     }
 }

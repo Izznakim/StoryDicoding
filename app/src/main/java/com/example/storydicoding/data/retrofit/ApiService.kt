@@ -7,7 +7,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.File
 
 interface ApiService {
     @FormUrlEncoded
@@ -32,7 +31,7 @@ interface ApiService {
     @POST("stories")
     fun addNewStory(
         @Header("Authorization") authorization: String,
-        @Part("description") desc:RequestBody,
-        @Part photo:MultipartBody.Part
-    ):Call<RegisterResponse>
+        @Part("description") desc: RequestBody,
+        @Part photo: MultipartBody.Part
+    ): Call<RegisterResponse>
 }

@@ -2,15 +2,12 @@ package com.example.storydicoding.ui.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.appcompat.app.AppCompatActivity
+import com.example.storydicoding.R
 import com.example.storydicoding.databinding.ActivitySignupBinding
 import com.example.storydicoding.ui.WelcomeActivity
 
@@ -56,7 +53,8 @@ class SignupActivity : AppCompatActivity() {
         }
 
         AnimatorSet().apply {
-            playSequentially(title,
+            playSequentially(
+                title,
                 togetherName,
                 togetherEmail,
                 togetherPassword, signup
@@ -72,16 +70,22 @@ class SignupActivity : AppCompatActivity() {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 when {
-                    name.isEmpty() -> etName.error = "Masukkan nama"
-                    email.isEmpty() -> etEmail.error = "Masukkan email"
-                    password.isEmpty() -> etPassword.error = "Masukkan password"
+                    name.isEmpty() -> etName.error = getString(R.string.error_input_name)
+                    email.isEmpty() -> etEmail.error = getString(R.string.error_input_email)
+                    password.isEmpty() -> etPassword.error =
+                        getString(R.string.error_input_password)
                     else -> {
                         signupViewModel.registerUser(name, email, password)
                             .observe(this@SignupActivity) {
                                 AlertDialog.Builder(this@SignupActivity).apply {
-                                    setTitle("SignUp!")
-                                    setMessage(it)
-                                    setPositiveButton("Next") { _, _ ->
+                                    setTitle(getString(R.string.signup_alert_dialog))
+                                    val message: String = if (!it) {
+                                        getString(R.string.message_success_signup)
+                                    } else {
+                                        getString(R.string.message_fail_signup)
+                                    }
+                                    setMessage(message)
+                                    setPositiveButton(getString(R.string.next)) { _, _ ->
                                         finish()
                                     }
                                     create()

@@ -21,15 +21,15 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityWelcomeBinding.inflate(layoutInflater)
+        binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView(window,supportActionBar)
+        setupView(window, supportActionBar)
         setupAction()
         playAnimation()
     }
 
-    private fun setupAction(){
+    private fun setupAction() {
         binding.apply {
             btnLogin.setOnClickListener {
                 startActivity(Intent(this@WelcomeActivity, LoginActivity::class.java))
@@ -40,34 +40,34 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun playAnimation(){
-        ObjectAnimator.ofFloat(binding.ivWelcome, View.TRANSLATION_X,-30f,30f).apply {
-            duration=6000
-            repeatCount=ObjectAnimator.INFINITE
-            repeatMode=ObjectAnimator.REVERSE
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.ivWelcome, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
         }.start()
 
-        val title=ObjectAnimator.ofFloat(binding.tvTitle,View.ALPHA,1f).setDuration(500)
-        val desc=ObjectAnimator.ofFloat(binding.tvDesc,View.ALPHA,1f).setDuration(500)
-        val login=ObjectAnimator.ofFloat(binding.btnLogin,View.ALPHA,1f).setDuration(500)
-        val signup=ObjectAnimator.ofFloat(binding.btnSignup,View.ALPHA,1f).setDuration(500)
+        val title = ObjectAnimator.ofFloat(binding.tvTitle, View.ALPHA, 1f).setDuration(500)
+        val desc = ObjectAnimator.ofFloat(binding.tvDesc, View.ALPHA, 1f).setDuration(500)
+        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(500)
+        val signup = ObjectAnimator.ofFloat(binding.btnSignup, View.ALPHA, 1f).setDuration(500)
 
-        val together=AnimatorSet().apply {
-            playTogether(login,signup)
+        val together = AnimatorSet().apply {
+            playTogether(login, signup)
         }
 
         AnimatorSet().apply {
-            playSequentially(title,desc,together)
+            playSequentially(title, desc, together)
             start()
         }
     }
 
-    companion object{
-        fun setupView(window: Window, actBar:ActionBar?){
+    companion object {
+        fun setupView(window: Window, actBar: ActionBar?) {
             @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.insetsController?.hide(WindowInsets.Type.statusBars())
-            }else{
+            } else {
                 window.setFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN

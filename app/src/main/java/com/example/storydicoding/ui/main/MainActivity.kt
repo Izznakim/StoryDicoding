@@ -22,15 +22,15 @@ import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.ui.liststory.ListStoryFragment
 import com.example.storydicoding.ui.WelcomeActivity
 
-private val Context.dataStore:DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupView()
@@ -38,28 +38,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater=menuInflater
-        inflater.inflate(R.menu.option_menu,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.menu_logout->{
+        return when (item.itemId) {
+            R.id.menu_logout -> {
                 mainViewModel.logout()
                 true
             }
-            else-> true
+            else -> true
         }
     }
 
-    private fun setupViewModel(){
-        mainViewModel=ViewModelProvider(this,ViewModelFactory(UserPreference.getInstance(dataStore)))[MainViewModel::class.java]
+    private fun setupViewModel() {
+        mainViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[MainViewModel::class.java]
 
-        mainViewModel.getUser().observe(this){
-            if (it.isLogin){
+        mainViewModel.getUser().observe(this) {
+            if (it.isLogin) {
                 setupFragment(it)
-            }else{
+            } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
@@ -67,34 +70,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupFragment(user: User) {
-        val mFragmentManager=supportFragmentManager
-        val fragment=mFragmentManager.findFragmentByTag(ListStoryFragment::class.java.simpleName)
-        val mBundle=Bundle()
-        val listStoryFragment=ListStoryFragment()
+        val mFragmentManager = supportFragmentManager
+        val fragment = mFragmentManager.findFragmentByTag(ListStoryFragment::class.java.simpleName)
+        val mBundle = Bundle()
+        val listStoryFragment = ListStoryFragment()
 
-        mBundle.putParcelable(ListStoryFragment.USER,user)
-        listStoryFragment.arguments=mBundle
+        mBundle.putParcelable(ListStoryFragment.USER, user)
+        listStoryFragment.arguments = mBundle
 
-        if (fragment !is ListStoryFragment){
+        if (fragment !is ListStoryFragment) {
             mFragmentManager.commit {
-                add(R.id.fragment_story_container, listStoryFragment, ListStoryFragment::class.java.simpleName)
+                add(
+                    R.id.fragment_story_container,
+                    listStoryFragment,
+                    ListStoryFragment::class.java.simpleName
+                )
             }
         }
     }
 
-    private fun setupView(){
+    private fun setupView() {
         @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
-        }else{
+        } else {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-    }
-
-    companion object{
-        private const val TAG = "MainActivity"
     }
 }

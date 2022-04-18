@@ -2,7 +2,6 @@ package com.example.storydicoding.ui.detailstory
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.databinding.FragmentDetailStoryBinding
 
 class DetailStoryFragment : DialogFragment() {
-    private var _binding: FragmentDetailStoryBinding?=null
-    private var story: ListStoryItem?=null
+    private var _binding: FragmentDetailStoryBinding? = null
+    private var story: ListStoryItem? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,7 +21,7 @@ class DetailStoryFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding= FragmentDetailStoryBinding.inflate(inflater,container,false)
+        _binding = FragmentDetailStoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,16 +30,15 @@ class DetailStoryFragment : DialogFragment() {
 
         setupArguments()
         setupView()
-        Log.d(TAG, "onViewCreated: ${story?.name}")
     }
 
-    private fun setupArguments(){
-        if (arguments!=null) {
+    private fun setupArguments() {
+        if (arguments != null) {
             story = arguments?.getParcelable(STORY)
         }
     }
 
-    private fun setupView(){
+    private fun setupView() {
         binding.apply {
             layoutDetail.apply {
                 Glide.with(requireContext())
@@ -50,7 +48,7 @@ class DetailStoryFragment : DialogFragment() {
                 tvName.text = story?.name
                 tvCreatedat.text = story?.createdAt?.dateFormat()
             }
-            tvDesc.text=story?.description
+            tvDesc.text = story?.description
         }
     }
 
@@ -60,14 +58,13 @@ class DetailStoryFragment : DialogFragment() {
         dialogLayoutSetting(dialog)
     }
 
-    companion object{
-        const val STORY="story"
-        private const val TAG = "DetailStoryFragment"
+    companion object {
+        const val STORY = "story"
 
-        fun dialogLayoutSetting(dialog: Dialog?){
-            if (dialog!=null){
-                val width=ViewGroup.LayoutParams.MATCH_PARENT
-                val height=ViewGroup.LayoutParams.WRAP_CONTENT
+        fun dialogLayoutSetting(dialog: Dialog?) {
+            if (dialog != null) {
+                val width = ViewGroup.LayoutParams.MATCH_PARENT
+                val height = ViewGroup.LayoutParams.WRAP_CONTENT
                 dialog.window?.setLayout(width, height)
             }
         }

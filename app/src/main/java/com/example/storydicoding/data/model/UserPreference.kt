@@ -13,38 +13,38 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         return dataStore.data.map {
             User(
                 it[NAME_KEY] ?: "",
-                it[TOKEN_KEY]?:"",
-                it[STATE_KEY]?:false
+                it[TOKEN_KEY] ?: "",
+                it[STATE_KEY] ?: false
             )
         }
     }
 
-    suspend fun saveUser(name:String,token:String){
+    suspend fun saveUser(name: String, token: String) {
         dataStore.edit {
-            it[NAME_KEY]=name
-            it[TOKEN_KEY]=token
-            it[STATE_KEY]=true
+            it[NAME_KEY] = name
+            it[TOKEN_KEY] = token
+            it[STATE_KEY] = true
         }
     }
 
-    suspend fun logout(){
+    suspend fun logout() {
         dataStore.edit {
             it.clear()
         }
     }
 
-    companion object{
+    companion object {
         @Volatile
-        private var INSTANCE:UserPreference?=null
+        private var INSTANCE: UserPreference? = null
 
-        private val NAME_KEY= stringPreferencesKey("name")
-        private val TOKEN_KEY= stringPreferencesKey("token")
-        private val STATE_KEY= booleanPreferencesKey("state")
+        private val NAME_KEY = stringPreferencesKey("name")
+        private val TOKEN_KEY = stringPreferencesKey("token")
+        private val STATE_KEY = booleanPreferencesKey("state")
 
-        fun getInstance(dataStore: DataStore<Preferences>):UserPreference{
-            return INSTANCE?: synchronized(this){
-                val instance=UserPreference(dataStore)
-                INSTANCE=instance
+        fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
+            return INSTANCE ?: synchronized(this) {
+                val instance = UserPreference(dataStore)
+                INSTANCE = instance
                 instance
             }
         }

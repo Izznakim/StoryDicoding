@@ -3,19 +3,15 @@ package com.example.storydicoding.ui.addstory
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -23,12 +19,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.storydicoding.R
 import com.example.storydicoding.createCustomTempFile
-import com.example.storydicoding.data.model.User
 import com.example.storydicoding.databinding.FragmentAddStoryBinding
 import com.example.storydicoding.reduceFileImage
 import com.example.storydicoding.ui.detailstory.DetailStoryFragment
-import com.example.storydicoding.ui.liststory.ListStoryFragment
-import com.example.storydicoding.ui.signup.SignupViewModel
 import com.example.storydicoding.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -82,7 +75,7 @@ class AddStoryFragment : DialogFragment() {
                 if (desc.isNotEmpty()) {
                     addNewStory(desc)
                 } else {
-                    etDesc.error = "Kamu harus mengisi terlebih dahulu"
+                    etDesc.error = getString(R.string.error_desc_story)
                 }
             }
         }
@@ -98,8 +91,8 @@ class AddStoryFragment : DialogFragment() {
             createCustomTempFile(mApplication).also {
                 val photoURI: Uri =
                     FileProvider.getUriForFile(requireContext(), "com.example.storydicoding", it)
-                currentPhotoPath=it.absolutePath
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI)
+                currentPhotoPath = it.absolutePath
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 launcherIntentCamera.launch(intent)
             }
         }
@@ -122,13 +115,18 @@ class AddStoryFragment : DialogFragment() {
 
             addStoryViewModel.addNewStory("Bearer $token", description, imageMultipart)
                 .observe(this) {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                    val message: String = if (!it) {
+                        getString(R.string.message_success_add_story)
+                    } else {
+                        getString(R.string.message_fail_add_story)
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                     dialog?.dismiss()
                 }
         } else {
             Toast.makeText(
                 requireContext(),
-                "Silahkan masukkan berkas gambar terlebih dahulu.",
+                getString(R.string.warning_image_story),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -143,9 +141,9 @@ class AddStoryFragment : DialogFragment() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == RESULT_OK) {
-            val myFile=File(currentPhotoPath)
-            getFile=myFile
-            val result=BitmapFactory.decodeFile(myFile.path)
+            val myFile = File(currentPhotoPath)
+            getFile = myFile
+            val result = BitmapFactory.decodeFile(myFile.path)
             reduceFileImage(myFile)
             Glide.with(requireView())
                 .load(result)
@@ -170,7 +168,6 @@ class AddStoryFragment : DialogFragment() {
     }
 
     companion object {
-        private const val TAG = "AddStoryFragment"
         const val TOKEN = "token"
     }
 }
