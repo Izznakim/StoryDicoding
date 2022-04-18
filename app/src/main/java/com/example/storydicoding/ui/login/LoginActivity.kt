@@ -97,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
             ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(500)
         val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(500)
 
-        val togetherName = AnimatorSet().apply {
+        val togetherTitle = AnimatorSet().apply {
             playTogether(title, desc)
         }
         val togetherEmail = AnimatorSet().apply {
@@ -108,8 +108,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         AnimatorSet().apply {
-            playSequentially(title,
-                togetherName,
+            playSequentially(togetherTitle,
                 togetherEmail,
                 togetherPassword, login
             )
