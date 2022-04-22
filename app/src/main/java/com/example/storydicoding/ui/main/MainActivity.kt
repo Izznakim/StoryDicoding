@@ -10,18 +10,16 @@ import android.view.*
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storydicoding.R
 import com.example.storydicoding.ViewModelFactory
-import com.example.storydicoding.data.model.User
 import com.example.storydicoding.databinding.ActivityMainBinding
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.adapter.StoryAdapter
-import com.example.storydicoding.ui.addstory.AddStoryFragment
+import com.example.storydicoding.ui.addstory.AddStoryActivity
 import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -29,6 +27,8 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+
+    private var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,9 +76,10 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this) {
             if (it.isLogin) {
-                mainViewModel.getListStories("Bearer ${it.token}").observe(this) { listStory->
+                mainViewModel.getListStories("Bearer ${it.token}").observe(this) { listStory ->
                     binding.rvStory.adapter = setStories(listStory)
                 }
+                token = it.token
             } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
@@ -113,7 +114,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupActionView() {
         binding.fabCreateStory.setOnClickListener {
-//            Goin to add story activity
+            startActivity(
+                Intent(this, AddStoryActivity::class.java)
+                    .putExtra(AddStoryActivity.TOKEN, token)
+            )
         }
     }
 

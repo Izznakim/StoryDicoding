@@ -1,27 +1,22 @@
 package com.example.storydicoding.ui.addstory
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.Intent.ACTION_GET_CONTENT
 import android.graphics.BitmapFactory
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.FileProvider
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.storydicoding.R
 import com.example.storydicoding.createCustomTempFile
-import com.example.storydicoding.databinding.FragmentAddStoryBinding
+import com.example.storydicoding.databinding.ActivityAddStoryBinding
 import com.example.storydicoding.reduceFileImage
-import com.example.storydicoding.ui.detailstory.DetailStoryFragment
 import com.example.storydicoding.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -30,37 +25,24 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class AddStoryFragment : DialogFragment() {
-    private var _binding: FragmentAddStoryBinding? = null
-    private var token: String? = null
-    private var getFile: File? = null
-
-    private val binding get() = _binding!!
-    private val addStoryViewModel by viewModels<AddStoryViewModel>()
-
+class AddStoryActivity : AppCompatActivity() {
+    private lateinit var binding:ActivityAddStoryBinding
     private lateinit var currentPhotoPath: String
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentAddStoryBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private var token: String? = null
+    private var getFile: File? = null
+    private val addStoryViewModel by viewModels<AddStoryViewModel>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding= ActivityAddStoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setupArguments()
+        supportActionBar?.title=getString(R.string.add_story)
+        token=intent.getStringExtra(TOKEN)
+
         setupViewAction()
         setupProgressBar()
-    }
-
-    private fun setupArguments() {
-        if (arguments != null) {
-            token = arguments?.getString(TOKEN)
-        }
     }
 
     private fun setupViewAction() {
@@ -83,31 +65,27 @@ class AddStoryFragment : DialogFragment() {
     }
 
     private fun setupProgressBar() {
-        addStoryViewModel.isLoading.observe(viewLifecycleOwner) {
+        addStoryViewModel.isLoading.observe(this) {
             showLoading(it)
         }
     }
 
     private fun openCamera() {
-        val mPackageManager = activity?.packageManager
-        val mApplication = activity?.application
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        if (mPackageManager != null && mApplication != null) {
-            intent.resolveActivity(mPackageManager)
-            createCustomTempFile(mApplication).also {
-                val photoURI: Uri =
-                    FileProvider.getUriForFile(requireContext(), "com.example.storydicoding", it)
-                currentPhotoPath = it.absolutePath
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                launcherIntentCamera.launch(intent)
-            }
+        intent.resolveActivity(packageManager)
+        createCustomTempFile(application).also {
+            val photoURI: Uri =
+                FileProvider.getUriForFile(this, "com.example.storydicoding", it)
+            currentPhotoPath = it.absolutePath
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            launcherIntentCamera.launch(intent)
         }
     }
 
     private fun openGallery() {
         launcherIntentGallery.launch(Intent.createChooser(Intent().also {
-            it.action = ACTION_GET_CONTENT
+            it.action = Intent.ACTION_GET_CONTENT
             it.type = "image/*"
         }, "Choose a Picture?"))
     }
@@ -127,12 +105,12 @@ class AddStoryFragment : DialogFragment() {
                     } else {
                         getString(R.string.message_fail_add_story)
                     }
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                    dialog?.dismiss()
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    finish()
                 }
         } else {
             Toast.makeText(
-                requireContext(),
+                this,
                 getString(R.string.warning_image_story),
                 Toast.LENGTH_SHORT
             ).show()
@@ -147,11 +125,6 @@ class AddStoryFragment : DialogFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        DetailStoryFragment.dialogLayoutSetting(dialog)
-    }
-
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -160,7 +133,7 @@ class AddStoryFragment : DialogFragment() {
             getFile = myFile
             val result = BitmapFactory.decodeFile(myFile.path)
             reduceFileImage(myFile)
-            Glide.with(requireView())
+            Glide.with(this)
                 .load(result)
                 .apply(RequestOptions())
                 .into(binding.ivPhoto)
@@ -172,10 +145,10 @@ class AddStoryFragment : DialogFragment() {
     ) {
         if (it.resultCode == RESULT_OK) {
             val selectedImg: Uri = it.data?.data as Uri
-            val myFile = uriToFile(selectedImg, requireContext())
+            val myFile = uriToFile(selectedImg, this)
 
             getFile = myFile
-            Glide.with(requireView())
+            Glide.with(this)
                 .load(selectedImg)
                 .apply(RequestOptions())
                 .into(binding.ivPhoto)
