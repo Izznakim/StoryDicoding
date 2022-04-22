@@ -61,7 +61,7 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupProgressBar(){
+    private fun setupProgressBar() {
         signupViewModel.isLoading.observe(this) {
             showLoading(it)
         }

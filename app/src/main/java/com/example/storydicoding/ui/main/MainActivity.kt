@@ -6,22 +6,23 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowInsets
-import android.view.WindowManager
+import android.view.*
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storydicoding.R
 import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.data.model.User
 import com.example.storydicoding.databinding.ActivityMainBinding
 import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.ui.liststory.ListStoryFragment
+import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.ui.WelcomeActivity
+import com.example.storydicoding.ui.adapter.StoryAdapter
+import com.example.storydicoding.ui.addstory.AddStoryFragment
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -35,7 +36,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
+        setupAdapter()
         setupViewModel()
+        setupActionView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,11 +53,18 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.logout()
                 true
             }
-            R.id.menu_translate->{
+            R.id.menu_translate -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
             else -> true
+        }
+    }
+
+    private fun setupAdapter() {
+        binding.apply {
+            rvStory.layoutManager = LinearLayoutManager(this@MainActivity)
+            rvStory.setHasFixedSize(true)
         }
     }
 
@@ -66,31 +76,26 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this) {
             if (it.isLogin) {
-                setupFragment(it)
+                mainViewModel.getListStories("Bearer ${it.token}").observe(this) { listStory->
+                    binding.rvStory.adapter = setStories(listStory)
+                }
             } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
         }
-    }
 
-    private fun setupFragment(user: User) {
-        val mFragmentManager = supportFragmentManager
-        val fragment = mFragmentManager.findFragmentByTag(ListStoryFragment::class.java.simpleName)
-        val mBundle = Bundle()
-        val listStoryFragment = ListStoryFragment()
-
-        mBundle.putParcelable(ListStoryFragment.USER, user)
-        listStoryFragment.arguments = mBundle
-
-        if (fragment !is ListStoryFragment) {
-            mFragmentManager.commit {
-                add(
-                    R.id.fragment_story_container,
-                    listStoryFragment,
-                    ListStoryFragment::class.java.simpleName
-                )
+        mainViewModel.error.observe(this) {
+            val message = if (!it) {
+                getString(R.string.message_success_load_list)
+            } else {
+                getString(R.string.message_fail_load_list)
             }
+            Snackbar.make(window.decorView, message, Snackbar.LENGTH_SHORT).show()
+        }
+
+        mainViewModel.isLoading.observe(this) {
+            showLoading(it)
         }
     }
 
@@ -103,6 +108,33 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
+        }
+    }
+
+    private fun setupActionView() {
+        binding.fabCreateStory.setOnClickListener {
+//            Goin to add story activity
+        }
+    }
+
+    private fun setStories(stories: List<ListStoryItem>): StoryAdapter {
+        val listStory = ArrayList<ListStoryItem>()
+        if (stories.isNotEmpty()) {
+            stories.forEach {
+                listStory.add(it)
+            }
+        } else {
+            Snackbar.make(window.decorView, getString(R.string.empty_data), Snackbar.LENGTH_LONG)
+                .show()
+        }
+        return StoryAdapter(listStory)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

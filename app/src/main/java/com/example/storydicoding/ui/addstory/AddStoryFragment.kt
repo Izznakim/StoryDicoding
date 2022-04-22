@@ -82,7 +82,7 @@ class AddStoryFragment : DialogFragment() {
         }
     }
 
-    private fun setupProgressBar(){
+    private fun setupProgressBar() {
         addStoryViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
