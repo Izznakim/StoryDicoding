@@ -20,6 +20,7 @@ import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.adapter.StoryAdapter
 import com.example.storydicoding.ui.addstory.AddStoryActivity
+import com.example.storydicoding.ui.maps.MapsActivity
 import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -55,6 +56,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_translate -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                true
+            }
+            R.id.menu_map_mode->{
+                startActivity(Intent(this,MapsActivity::class.java))
                 true
             }
             else -> true

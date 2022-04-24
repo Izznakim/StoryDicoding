@@ -49,4 +49,5 @@
     <string name="message_fail_load_list">Story list failed to load.</string>
     <string name="language_setting">Language setting</string>
     <string name="empty_data">Sorry, data is empty.</string>
+    <string name="map_mode">Map Mode</string>
 </resources>
