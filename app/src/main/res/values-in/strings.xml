@@ -51,4 +51,6 @@
     <string name="language_setting">Pengaturan bahasa</string>
     <string name="empty_data">Maaf, data kosong.</string>
     <string name="map_mode">Mode Peta</string>
+    <string name="message_success_list_story_map_mode">Daftar cerita dalam mode map berhasil dimuat</string>
+    <string name="message_fail_list_story_map_mode">Daftar cerita dalam mode map gagal dimuat</string>
 </resources>

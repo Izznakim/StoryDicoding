@@ -20,6 +20,7 @@ import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.adapter.StoryAdapter
 import com.example.storydicoding.ui.addstory.AddStoryActivity
+import com.example.storydicoding.ui.login.LoginActivity
 import com.example.storydicoding.ui.maps.MapsActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
+        setupView(window)
         setupAdapter()
         setupViewModel()
         setupActionView()
@@ -58,8 +59,13 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
-            R.id.menu_map_mode->{
-                startActivity(Intent(this,MapsActivity::class.java))
+            R.id.menu_map_mode -> {
+                startActivity(
+                    Intent(
+                        this,
+                        MapsActivity::class.java
+                    ).putExtra(AddStoryActivity.TOKEN, token)
+                )
                 true
             }
             else -> true
@@ -105,18 +111,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-    }
-
     private fun setupActionView() {
         binding.fabCreateStory.setOnClickListener {
             startActivity(
@@ -144,6 +138,20 @@ class MainActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    companion object{
+        fun setupView(window: Window) {
+            @Suppress("DEPRECATION")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.hide(WindowInsets.Type.statusBars())
+            } else {
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                )
+            }
         }
     }
 }

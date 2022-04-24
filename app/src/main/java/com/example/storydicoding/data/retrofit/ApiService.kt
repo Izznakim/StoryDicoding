@@ -34,4 +34,8 @@ interface ApiService {
         @Part("description") desc: RequestBody,
         @Part photo: MultipartBody.Part
     ): Call<RegisterResponse>
+
+    @GET("stories?location=1")
+    fun getStoryMaps(@Header("Authorization") authorization: String): Call<StoriesResponse>
+
 }
