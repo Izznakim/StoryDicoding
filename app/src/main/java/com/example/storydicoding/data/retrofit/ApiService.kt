@@ -1,5 +1,6 @@
 package com.example.storydicoding.data.retrofit
 
+import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.data.response.LoginResponse
 import com.example.storydicoding.data.response.RegisterResponse
 import com.example.storydicoding.data.response.StoriesResponse
@@ -25,7 +26,11 @@ interface ApiService {
     ): Call<LoginResponse>
 
     @GET("stories")
-    fun getStories(@Header("Authorization") authorization: String): Call<StoriesResponse>
+    suspend fun getStories(
+        @Header("Authorization") authorization: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): StoriesResponse
 
     @Multipart
     @POST("stories")
@@ -37,5 +42,4 @@ interface ApiService {
 
     @GET("stories?location=1")
     fun getStoryMaps(@Header("Authorization") authorization: String): Call<StoriesResponse>
-
 }

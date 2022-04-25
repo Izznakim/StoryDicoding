@@ -29,6 +29,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var adapter:StoryAdapter
 
     private var token: String? = null
 
@@ -72,11 +73,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAdapter() {
-        binding.apply {
-            rvStory.layoutManager = LinearLayoutManager(this@MainActivity)
-            rvStory.setHasFixedSize(true)
-        }
+    private fun setupAdapter(){
+        binding.rvStory.layoutManager=LinearLayoutManager(this)
+        adapter=StoryAdapter()
+        binding.rvStory.adapter=adapter
     }
 
     private fun setupViewModel() {
@@ -87,27 +87,14 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this) {
             if (it.isLogin) {
-                mainViewModel.getListStories("Bearer ${it.token}").observe(this) { listStory ->
-                    binding.rvStory.adapter = setStories(listStory)
+                mainViewModel.getListStories("Bearer ${it.token}").observe(this){ list->
+                    adapter.submitData(lifecycle,list)
                 }
                 token = it.token
             } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
-        }
-
-        mainViewModel.error.observe(this) {
-            val message = if (!it) {
-                getString(R.string.message_success_load_list)
-            } else {
-                getString(R.string.message_fail_load_list)
-            }
-            Snackbar.make(window.decorView, message, Snackbar.LENGTH_SHORT).show()
-        }
-
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
         }
     }
 
@@ -117,27 +104,6 @@ class MainActivity : AppCompatActivity() {
                 Intent(this, AddStoryActivity::class.java)
                     .putExtra(AddStoryActivity.TOKEN, token)
             )
-        }
-    }
-
-    private fun setStories(stories: List<ListStoryItem>): StoryAdapter {
-        val listStory = ArrayList<ListStoryItem>()
-        if (stories.isNotEmpty()) {
-            stories.forEach {
-                listStory.add(it)
-            }
-        } else {
-            Snackbar.make(window.decorView, getString(R.string.empty_data), Snackbar.LENGTH_LONG)
-                .show()
-        }
-        return StoryAdapter(listStory)
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
         }
     }
 
