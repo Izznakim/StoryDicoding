@@ -30,7 +30,6 @@ class StoryPagingSource(private val apiService: ApiService,private val token: St
     }
 
     private companion object{
-        private const val TAG = "StoryPagingSource"
         const val INITIAL_PAGE_INDEX=1
     }
 }
