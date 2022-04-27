@@ -52,4 +52,5 @@
     <string name="map_mode">Map Mode</string>
     <string name="message_success_list_story_map_mode">Story list in map mode loaded successfully</string>
     <string name="message_fail_list_story_map_mode">Story list in map mode failed to load</string>
+    <string name="try_again">Try again</string>
 </resources>

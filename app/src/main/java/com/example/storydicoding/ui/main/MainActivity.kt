@@ -19,6 +19,7 @@ import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.setupView
 import com.example.storydicoding.ui.WelcomeActivity
+import com.example.storydicoding.ui.adapter.LoadingStateAdapter
 import com.example.storydicoding.ui.adapter.StoryAdapter
 import com.example.storydicoding.ui.addstory.AddStoryActivity
 import com.example.storydicoding.ui.detailstory.DetailActivity
@@ -85,7 +86,11 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-        binding.rvStory.adapter=adapter
+        binding.rvStory.adapter=adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter{
+                adapter.retry()
+            }
+        )
     }
 
     private fun setupViewModel() {
