@@ -16,6 +16,7 @@ import com.example.storydicoding.R
 import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.databinding.ActivityLoginBinding
+import com.example.storydicoding.setupViewWelcomePage
 import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.main.MainActivity
 
@@ -31,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        WelcomeActivity.setupView(window, supportActionBar)
+        setupViewWelcomePage(window, supportActionBar)
         setupViewModel()
         setupAction()
         playAnimation()

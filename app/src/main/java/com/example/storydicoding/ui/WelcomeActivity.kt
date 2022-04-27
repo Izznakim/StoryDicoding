@@ -12,6 +12,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.ActionBar
 import com.example.storydicoding.databinding.ActivityWelcomeBinding
+import com.example.storydicoding.setupViewWelcomePage
 import com.example.storydicoding.ui.login.LoginActivity
 import com.example.storydicoding.ui.signup.SignupActivity
 
@@ -24,7 +25,7 @@ class WelcomeActivity : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView(window, supportActionBar)
+        setupViewWelcomePage(window, supportActionBar)
         setupAction()
         playAnimation()
     }
@@ -59,21 +60,6 @@ class WelcomeActivity : AppCompatActivity() {
         AnimatorSet().apply {
             playSequentially(title, desc, together)
             start()
-        }
-    }
-
-    companion object {
-        fun setupView(window: Window, actBar: ActionBar?) {
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                window.insetsController?.hide(WindowInsets.Type.statusBars())
-            } else {
-                window.setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-                )
-            }
-            actBar?.hide()
         }
     }
 }

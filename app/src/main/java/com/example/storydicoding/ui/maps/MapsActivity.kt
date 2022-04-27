@@ -3,18 +3,12 @@ package com.example.storydicoding.ui.maps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.example.storydicoding.Helper.Companion.dateFormat
 import com.example.storydicoding.R
-import com.example.storydicoding.ViewModelFactory
-import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.databinding.ActivityMapsBinding
-import com.example.storydicoding.ui.WelcomeActivity
+import com.example.storydicoding.setupView
 import com.example.storydicoding.ui.addstory.AddStoryActivity
-import com.example.storydicoding.ui.detailstory.DetailStoryFragment
+import com.example.storydicoding.ui.detailstory.DetailActivity
 import com.example.storydicoding.ui.main.MainActivity
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -46,7 +40,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         token = intent.getStringExtra(AddStoryActivity.TOKEN)
 
-        MainActivity.setupView(window)
+        setupView(window)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -73,16 +67,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         .snippet(story.description)
                 )
                 mMap.setOnInfoWindowClickListener {
-                    val fragmentManager =supportFragmentManager
-                    val detailStoryFragment = DetailStoryFragment()
-                    val bundle = Bundle()
-
-                    bundle.putParcelable(DetailStoryFragment.STORY, story)
-                    detailStoryFragment.show(
-                        fragmentManager,
-                        DetailStoryFragment::class.java.simpleName
+                    startActivity(
+                        Intent(this, DetailActivity::class.java).putExtra(
+                            DetailActivity.STORY,
+                            story
+                        )
                     )
-                    detailStoryFragment.arguments = bundle
                 }
             }
         }

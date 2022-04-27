@@ -17,9 +17,11 @@ import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.databinding.ActivityMainBinding
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.data.response.ListStoryItem
+import com.example.storydicoding.setupView
 import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.adapter.StoryAdapter
 import com.example.storydicoding.ui.addstory.AddStoryActivity
+import com.example.storydicoding.ui.detailstory.DetailActivity
 import com.example.storydicoding.ui.login.LoginActivity
 import com.example.storydicoding.ui.maps.MapsActivity
 import com.google.android.material.snackbar.Snackbar
@@ -75,7 +77,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupAdapter(){
         binding.rvStory.layoutManager=LinearLayoutManager(this)
-        adapter=StoryAdapter()
+        adapter=StoryAdapter{
+            startActivity(
+                Intent(this, DetailActivity::class.java).putExtra(
+                    DetailActivity.STORY,
+                    it
+                )
+            )
+        }
         binding.rvStory.adapter=adapter
     }
 
@@ -104,20 +113,6 @@ class MainActivity : AppCompatActivity() {
                 Intent(this, AddStoryActivity::class.java)
                     .putExtra(AddStoryActivity.TOKEN, token)
             )
-        }
-    }
-
-    companion object{
-        fun setupView(window: Window) {
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                window.insetsController?.hide(WindowInsets.Type.statusBars())
-            } else {
-                window.setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-                )
-            }
         }
     }
 }

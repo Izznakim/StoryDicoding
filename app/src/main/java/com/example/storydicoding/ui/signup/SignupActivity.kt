@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.storydicoding.R
 import com.example.storydicoding.databinding.ActivitySignupBinding
+import com.example.storydicoding.setupViewWelcomePage
 import com.example.storydicoding.ui.WelcomeActivity
 
 class SignupActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        WelcomeActivity.setupView(window, supportActionBar)
+        setupViewWelcomePage(window, supportActionBar)
         setupAction()
         setupProgressBar()
         playAnimation()
