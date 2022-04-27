@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(this,UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
         loginViewModel.isLoading.observe(this) {

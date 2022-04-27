@@ -11,6 +11,7 @@ import com.example.storydicoding.ui.login.LoginViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(
+    private val context: Context,
     private val pref: UserPreference
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
@@ -18,7 +19,7 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(
                 pref,
-                Injection.provideRepository()
+                Injection.provideRepository(context)
             ) as T
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(pref) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
