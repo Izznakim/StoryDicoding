@@ -17,6 +17,7 @@ import com.example.storydicoding.R
 import com.example.storydicoding.createCustomTempFile
 import com.example.storydicoding.databinding.ActivityAddStoryBinding
 import com.example.storydicoding.reduceFileImage
+import com.example.storydicoding.ui.main.MainActivity
 import com.example.storydicoding.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,7 +27,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class AddStoryActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityAddStoryBinding
+    private lateinit var binding: ActivityAddStoryBinding
     private lateinit var currentPhotoPath: String
 
     private var token: String? = null
@@ -35,11 +36,11 @@ class AddStoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityAddStoryBinding.inflate(layoutInflater)
+        binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title=getString(R.string.add_story)
-        token=intent.getStringExtra(TOKEN)
+        supportActionBar?.title = getString(R.string.add_story)
+        token = intent.getStringExtra(TOKEN)
 
         setupViewAction()
         setupProgressBar()
@@ -106,7 +107,12 @@ class AddStoryActivity : AppCompatActivity() {
                         getString(R.string.message_fail_add_story)
                     }
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                    finish()
+                    Intent(this, MainActivity::class.java).also { intent ->
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
                 }
         } else {
             Toast.makeText(
