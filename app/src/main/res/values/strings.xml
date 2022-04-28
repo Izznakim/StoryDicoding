@@ -55,4 +55,5 @@
     <string name="try_again">Try again</string>
     <string name="fail_msg_parsing_map_style">Map style parsing failed.</string>
     <string name="exception_msg_parsing_map_style">Can\'t find style. Error: %1$s</string>
+    <string name="location_not_found">Location is not found. Try Again</string>
 </resources>

@@ -56,4 +56,5 @@
     <string name="try_again">Coba lagi</string>
     <string name="fail_msg_parsing_map_style">Penguraian map style gagal.</string>
     <string name="exception_msg_parsing_map_style">Tidak dapat menemukan style. Error: %1$s</string>
+    <string name="location_not_found">Lokasi tidak ditemukan. Coba lagi</string>
 </resources>

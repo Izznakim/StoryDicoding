@@ -1,15 +1,20 @@
 package com.example.storydicoding.ui.addstory
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -19,6 +24,11 @@ import com.example.storydicoding.databinding.ActivityAddStoryBinding
 import com.example.storydicoding.reduceFileImage
 import com.example.storydicoding.ui.main.MainActivity
 import com.example.storydicoding.uriToFile
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -29,6 +39,7 @@ import java.io.File
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private lateinit var currentPhotoPath: String
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var token: String? = null
     private var getFile: File? = null
@@ -44,6 +55,8 @@ class AddStoryActivity : AppCompatActivity() {
 
         setupViewAction()
         setupProgressBar()
+        fusedLocationClient=LocationServices.getFusedLocationProviderClient(this)
+        getMyLastLocation()
     }
 
     private fun setupViewAction() {
@@ -161,7 +174,43 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permission ->
+        when {
+            permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getMyLastLocation()
+            permission[Manifest.permission.ACCESS_COARSE_LOCATION]?:false->getMyLastLocation()
+            else->{}
+        }
+    }
+
+    private fun checkPermission(permission:String):Boolean{
+        return ContextCompat.checkSelfPermission(this,permission)==PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLastLocation(){
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)&&checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+            fusedLocationClient.lastLocation.addOnSuccessListener { location:Location?->
+                if (location!=null){
+                    val posistion=LatLng(location.latitude,location.longitude)
+                    Log.d(TAG, "getMyLastLocation: $posistion")
+                }else{
+                    Toast.makeText(
+                        this,
+                        getString(R.string.location_not_found),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }else{
+            requestPermissionLauncher.launch(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
+            )
+        }
+    }
+
     companion object {
         const val TOKEN = "token"
+        private const val TAG = "AddStoryActivity"
     }
 }
