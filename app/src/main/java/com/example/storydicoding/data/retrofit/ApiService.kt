@@ -1,6 +1,5 @@
 package com.example.storydicoding.data.retrofit
 
-import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.data.response.LoginResponse
 import com.example.storydicoding.data.response.RegisterResponse
 import com.example.storydicoding.data.response.StoriesResponse
@@ -38,8 +37,8 @@ interface ApiService {
         @Header("Authorization") authorization: String,
         @Part("description") desc: RequestBody,
         @Part photo: MultipartBody.Part,
-        @Part("lat") lat:Float?=null,
-        @Part("lon") lon:Float?=null
+        @Part("lat") lat: Float? = null,
+        @Part("lon") lon: Float? = null
     ): Call<RegisterResponse>
 
     @GET("stories?location=1")

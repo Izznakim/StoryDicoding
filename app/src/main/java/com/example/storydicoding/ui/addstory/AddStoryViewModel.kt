@@ -25,7 +25,7 @@ class AddStoryViewModel : ViewModel() {
     ): LiveData<Boolean> {
         _isLoading.value = true
         val error = MutableLiveData<Boolean>()
-        val client = ApiConfig.getApiService().addNewStory(token, desc, photo, lat,lon)
+        val client = ApiConfig.getApiService().addNewStory(token, desc, photo, lat, lon)
         client.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(
                 call: Call<RegisterResponse>,

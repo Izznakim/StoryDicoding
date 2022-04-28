@@ -2,11 +2,11 @@ package com.example.storydicoding.ui.main
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -14,25 +14,22 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storydicoding.R
 import com.example.storydicoding.ViewModelFactory
-import com.example.storydicoding.databinding.ActivityMainBinding
 import com.example.storydicoding.data.model.UserPreference
-import com.example.storydicoding.data.response.ListStoryItem
+import com.example.storydicoding.databinding.ActivityMainBinding
 import com.example.storydicoding.setupView
 import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.adapter.LoadingStateAdapter
 import com.example.storydicoding.ui.adapter.StoryAdapter
 import com.example.storydicoding.ui.addstory.AddStoryActivity
 import com.example.storydicoding.ui.detailstory.DetailActivity
-import com.example.storydicoding.ui.login.LoginActivity
 import com.example.storydicoding.ui.maps.MapsActivity
-import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adapter:StoryAdapter
+    private lateinit var adapter: StoryAdapter
 
     private var token: String? = null
 
@@ -76,9 +73,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAdapter(){
-        binding.rvStory.layoutManager=LinearLayoutManager(this)
-        adapter=StoryAdapter{
+    private fun setupAdapter() {
+        binding.rvStory.layoutManager = LinearLayoutManager(this)
+        adapter = StoryAdapter {
             startActivity(
                 Intent(this, DetailActivity::class.java).putExtra(
                     DetailActivity.STORY,
@@ -86,8 +83,8 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-        binding.rvStory.adapter=adapter.withLoadStateFooter(
-            footer = LoadingStateAdapter{
+        binding.rvStory.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
                 adapter.retry()
             }
         )
@@ -96,13 +93,13 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         mainViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(this,UserPreference.getInstance(dataStore))
+            ViewModelFactory(this, UserPreference.getInstance(dataStore))
         )[MainViewModel::class.java]
 
         mainViewModel.getUser().observe(this) {
             if (it.isLogin) {
-                mainViewModel.getListStories("Bearer ${it.token}").observe(this){ list->
-                    adapter.submitData(lifecycle,list)
+                mainViewModel.getListStories("Bearer ${it.token}").observe(this) { list ->
+                    adapter.submitData(lifecycle, list)
                 }
                 token = it.token
             } else {

@@ -6,14 +6,13 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
@@ -26,7 +25,6 @@ import com.example.storydicoding.ui.main.MainActivity
 import com.example.storydicoding.uriToFile
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -55,7 +53,7 @@ class AddStoryActivity : AppCompatActivity() {
 
         setupViewAction()
         setupProgressBar()
-        fusedLocationClient=LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getMyLastLocation()
     }
 
@@ -179,24 +177,25 @@ class AddStoryActivity : AppCompatActivity() {
     ) { permission ->
         when {
             permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> getMyLastLocation()
-            permission[Manifest.permission.ACCESS_COARSE_LOCATION]?:false->getMyLastLocation()
-            else->{}
+            permission[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getMyLastLocation()
+            else -> {}
         }
     }
 
-    private fun checkPermission(permission:String):Boolean{
-        return ContextCompat.checkSelfPermission(this,permission)==PackageManager.PERMISSION_GRANTED
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun getMyLastLocation(){
-        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)&&checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
-            fusedLocationClient.lastLocation.addOnSuccessListener { location:Location?->
-                if (location!=null){
-                    val posistion=LatLng(location.latitude,location.longitude)
-                    lat=location.latitude.toFloat()
-                    lon=location.longitude.toFloat()
-                    Log.d(TAG, "getMyLastLocation: $posistion")
-                }else{
+    private fun getMyLastLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    lat = location.latitude.toFloat()
+                    lon = location.longitude.toFloat()
+                } else {
                     Toast.makeText(
                         this,
                         getString(R.string.location_not_found),
@@ -204,15 +203,17 @@ class AddStoryActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-        }else{
+        } else {
             requestPermissionLauncher.launch(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
             )
         }
     }
 
     companion object {
         const val TOKEN = "token"
-        private const val TAG = "AddStoryActivity"
     }
 }

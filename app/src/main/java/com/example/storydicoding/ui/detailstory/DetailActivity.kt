@@ -1,24 +1,23 @@
 package com.example.storydicoding.ui.detailstory
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.storydicoding.Helper.Companion.dateFormat
-import com.example.storydicoding.R
 import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityDetailBinding
+    private lateinit var binding: ActivityDetailBinding
 
     private var story: ListStoryItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityDetailBinding.inflate(layoutInflater)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        story=intent.getParcelableExtra(STORY)
+        story = intent.getParcelableExtra(STORY)
 
         setupView()
     }
@@ -39,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    companion object{
-        const val STORY="story"
+    companion object {
+        const val STORY = "story"
     }
 }

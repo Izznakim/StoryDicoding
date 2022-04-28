@@ -17,7 +17,6 @@ import com.example.storydicoding.ViewModelFactory
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.databinding.ActivityLoginBinding
 import com.example.storydicoding.setupViewWelcomePage
-import com.example.storydicoding.ui.WelcomeActivity
 import com.example.storydicoding.ui.main.MainActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -41,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(this,UserPreference.getInstance(dataStore))
+            ViewModelFactory(this, UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
         loginViewModel.isLoading.observe(this) {

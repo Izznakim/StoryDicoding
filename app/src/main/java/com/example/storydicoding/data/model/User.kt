@@ -1,8 +1,5 @@
 package com.example.storydicoding.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 data class User(
     val name: String,
     val token: String,

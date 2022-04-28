@@ -1,6 +1,5 @@
 package com.example.storydicoding.ui.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -11,9 +10,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.storydicoding.Helper.Companion.dateFormat
 import com.example.storydicoding.data.response.ListStoryItem
 import com.example.storydicoding.databinding.StoryItemBinding
-import com.example.storydicoding.ui.detailstory.DetailActivity
 
-class StoryAdapter(private val onItemClicked:(ListStoryItem)->Unit) :
+class StoryAdapter(private val onItemClicked: (ListStoryItem) -> Unit) :
     PagingDataAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
 
 

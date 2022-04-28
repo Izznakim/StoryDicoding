@@ -15,9 +15,10 @@ class LoadingStateAdapter(private val retry: () -> Unit) :
         init {
             binding.retryBtn.setOnClickListener { retry.invoke() }
         }
-        fun bind(loadState: LoadState){
-            if (loadState is LoadState.Error){
-                binding.errorMsg.text=loadState.error.localizedMessage
+
+        fun bind(loadState: LoadState) {
+            if (loadState is LoadState.Error) {
+                binding.errorMsg.text = loadState.error.localizedMessage
             }
             binding.progressBar.isVisible = loadState is LoadState.Loading
             binding.retryBtn.isVisible = loadState is LoadState.Error
@@ -36,7 +37,7 @@ class LoadingStateAdapter(private val retry: () -> Unit) :
         parent: ViewGroup,
         loadState: LoadState
     ): LoadingStateViewHolder {
-        val binding=ItemLoadingBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return LoadingStateViewHolder(binding,retry)
+        val binding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return LoadingStateViewHolder(binding, retry)
     }
 }

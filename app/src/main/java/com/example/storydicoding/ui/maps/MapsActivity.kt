@@ -1,18 +1,13 @@
 package com.example.storydicoding.ui.maps
 
-import android.content.Intent
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.storydicoding.R
 import com.example.storydicoding.databinding.ActivityMapsBinding
 import com.example.storydicoding.setupView
 import com.example.storydicoding.ui.addstory.AddStoryActivity
-import com.example.storydicoding.ui.detailstory.DetailActivity
-import com.example.storydicoding.ui.main.MainActivity
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -61,7 +56,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getListStoryMaps() {
         mapsViewModel.getListStoryMaps("Bearer $token").observe(this) {
 
-            val firstPos=LatLng(it[0].lat,it[0].lon)
+            val firstPos = LatLng(it[0].lat, it[0].lon)
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(firstPos, 5f))
 
             it.forEach { story ->
@@ -83,16 +78,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setMapStyle(){
-        var message=""
+    private fun setMapStyle() {
+        var message = ""
         try {
-            val success=mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style))
-            if (!success){
-                message=getString(R.string.fail_msg_parsing_map_style)
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                message = getString(R.string.fail_msg_parsing_map_style)
             }
-        }catch (e:Resources.NotFoundException){
-            message= getString(R.string.exception_msg_parsing_map_style,e)
+        } catch (e: Resources.NotFoundException) {
+            message = getString(R.string.exception_msg_parsing_map_style, e)
         }
-        Snackbar.make(window.decorView,message,Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(window.decorView, message, Snackbar.LENGTH_SHORT).show()
     }
 }

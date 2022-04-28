@@ -3,12 +3,10 @@ package com.example.storydicoding
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.storydicoding.data.StoryRepository
-import com.example.storydicoding.ui.main.MainViewModel
 import com.example.storydicoding.data.model.UserPreference
 import com.example.storydicoding.di.Injection
 import com.example.storydicoding.ui.login.LoginViewModel
-import java.lang.IllegalArgumentException
+import com.example.storydicoding.ui.main.MainViewModel
 
 class ViewModelFactory(
     private val context: Context,

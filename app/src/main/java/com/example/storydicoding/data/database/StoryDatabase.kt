@@ -7,15 +7,15 @@ import androidx.room.RoomDatabase
 import com.example.storydicoding.data.response.ListStoryItem
 
 @Database(
-    entities = [ListStoryItem::class,RemoteKeys::class],
+    entities = [ListStoryItem::class, RemoteKeys::class],
     version = 2,
     exportSchema = false
 )
 abstract class StoryDatabase : RoomDatabase() {
-    abstract fun storyDao():StoryDao
-    abstract fun remoteKeysDao():RemoteKeysDao
+    abstract fun storyDao(): StoryDao
+    abstract fun remoteKeysDao(): RemoteKeysDao
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: StoryDatabase? = null
 

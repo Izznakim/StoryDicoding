@@ -10,10 +10,10 @@ import com.example.storydicoding.data.response.ListStoryItem
 @Dao
 interface StoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStory(story:List<ListStoryItem>)
+    suspend fun insertStory(story: List<ListStoryItem>)
 
     @Query("SELECT * FROM story")
-    fun getAllStory():PagingSource<Int,ListStoryItem>
+    fun getAllStory(): PagingSource<Int, ListStoryItem>
 
     @Query("DELETE FROM story")
     suspend fun deleteAll()

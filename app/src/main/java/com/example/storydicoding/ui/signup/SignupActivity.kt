@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.storydicoding.R
 import com.example.storydicoding.databinding.ActivitySignupBinding
 import com.example.storydicoding.setupViewWelcomePage
-import com.example.storydicoding.ui.WelcomeActivity
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding

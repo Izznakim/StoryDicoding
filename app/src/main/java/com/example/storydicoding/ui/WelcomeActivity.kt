@@ -3,14 +3,9 @@ package com.example.storydicoding.ui
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowInsets
-import android.view.WindowManager
-import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import com.example.storydicoding.databinding.ActivityWelcomeBinding
 import com.example.storydicoding.setupViewWelcomePage
 import com.example.storydicoding.ui.login.LoginActivity
