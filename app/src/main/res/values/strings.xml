@@ -53,4 +53,6 @@
     <string name="message_success_list_story_map_mode">Story list in map mode loaded successfully</string>
     <string name="message_fail_list_story_map_mode">Story list in map mode failed to load</string>
     <string name="try_again">Try again</string>
+    <string name="fail_msg_parsing_map_style">Map style parsing failed.</string>
+    <string name="exception_msg_parsing_map_style">Can\'t find style. Error: %1$s</string>
 </resources>

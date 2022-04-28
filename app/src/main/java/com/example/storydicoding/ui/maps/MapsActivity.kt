@@ -1,8 +1,10 @@
 package com.example.storydicoding.ui.maps
 
 import android.content.Intent
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.example.storydicoding.R
 import com.example.storydicoding.databinding.ActivityMapsBinding
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 
@@ -51,10 +54,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        setupViewModel()
+        getListStoryMaps()
+        setMapStyle()
     }
 
-    private fun setupViewModel() {
+    private fun getListStoryMaps() {
         mapsViewModel.getListStoryMaps("Bearer $token").observe(this) {
 
             val firstPos=LatLng(it[0].lat,it[0].lon)
@@ -66,14 +70,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     MarkerOptions().position(posLatLng).title(story.name)
                         .snippet(story.description)
                 )
-                mMap.setOnInfoWindowClickListener {
-                    startActivity(
-                        Intent(this, DetailActivity::class.java).putExtra(
-                            DetailActivity.STORY,
-                            story
-                        )
-                    )
-                }
             }
         }
 
@@ -85,5 +81,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             Snackbar.make(window.decorView, message, Snackbar.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setMapStyle(){
+        var message=""
+        try {
+            val success=mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style))
+            if (!success){
+                message=getString(R.string.fail_msg_parsing_map_style)
+            }
+        }catch (e:Resources.NotFoundException){
+            message= getString(R.string.exception_msg_parsing_map_style,e)
+        }
+        Snackbar.make(window.decorView,message,Snackbar.LENGTH_SHORT).show()
     }
 }
