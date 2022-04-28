@@ -26,8 +26,6 @@ import com.example.storydicoding.ui.main.MainActivity
 import com.example.storydicoding.uriToFile
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -43,6 +41,8 @@ class AddStoryActivity : AppCompatActivity() {
 
     private var token: String? = null
     private var getFile: File? = null
+    private var lat: Float? = null
+    private var lon: Float? = null
     private val addStoryViewModel by viewModels<AddStoryViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,7 +112,7 @@ class AddStoryActivity : AppCompatActivity() {
             val imageMultipart: MultipartBody.Part =
                 MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
 
-            addStoryViewModel.addNewStory("Bearer $token", description, imageMultipart)
+            addStoryViewModel.addNewStory("Bearer $token", description, imageMultipart, lat, lon)
                 .observe(this) {
                     val message: String = if (!it) {
                         getString(R.string.message_success_add_story)
@@ -193,6 +193,8 @@ class AddStoryActivity : AppCompatActivity() {
             fusedLocationClient.lastLocation.addOnSuccessListener { location:Location?->
                 if (location!=null){
                     val posistion=LatLng(location.latitude,location.longitude)
+                    lat=location.latitude.toFloat()
+                    lon=location.longitude.toFloat()
                     Log.d(TAG, "getMyLastLocation: $posistion")
                 }else{
                     Toast.makeText(

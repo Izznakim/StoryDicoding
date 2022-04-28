@@ -19,11 +19,13 @@ class AddStoryViewModel : ViewModel() {
     fun addNewStory(
         token: String,
         desc: RequestBody,
-        photo: MultipartBody.Part
+        photo: MultipartBody.Part,
+        lat: Float?,
+        lon: Float?
     ): LiveData<Boolean> {
         _isLoading.value = true
         val error = MutableLiveData<Boolean>()
-        val client = ApiConfig.getApiService().addNewStory(token, desc, photo)
+        val client = ApiConfig.getApiService().addNewStory(token, desc, photo, lat,lon)
         client.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(
                 call: Call<RegisterResponse>,

@@ -37,7 +37,9 @@ interface ApiService {
     fun addNewStory(
         @Header("Authorization") authorization: String,
         @Part("description") desc: RequestBody,
-        @Part photo: MultipartBody.Part
+        @Part photo: MultipartBody.Part,
+        @Part("lat") lat:Float?=null,
+        @Part("lon") lon:Float?=null
     ): Call<RegisterResponse>
 
     @GET("stories?location=1")
